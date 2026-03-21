@@ -1,1 +1,65 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Podcast Detail</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet"><style>body{margin:0;font-family:Inter,'Noto Sans SC',sans-serif;background:#f6f8fc;color:#101828}.container{max-width:860px;margin:0 auto;padding:28px 20px 60px}.back{display:inline-block;margin-bottom:20px;color:#2563eb;font-weight:700;text-decoration:none}.tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#fef3c7;color:#b45309;font-size:12px;font-weight:700}.title{font-size:clamp(2rem,4vw,3.4rem);line-height:1.02;letter-spacing:-.04em;margin:14px 0 12px}.lead{color:#667085;line-height:1.75;font-size:1.05rem}.panel{background:#fff;border:1px solid #d9e2f1;border-radius:18px;padding:18px;margin-top:18px;box-shadow:0 10px 30px rgba(16,24,40,.08)}h2{margin:0 0 10px;font-size:1.2rem}ul{line-height:1.8;color:#475467;padding-left:18px}p{line-height:1.75;color:#475467}a.link{color:#2563eb;text-decoration:none;font-weight:700}</style></head><body><div class="container"><a class="back" href="../index.html">← 返回首页</a><span class="tag">Podcast</span><div class="title">Dreamer 这期最重要的，不是 agent 很强，而是“何时值得托付”终于被认真讨论。</div><p class="lead">Latent Space 这期里，David Singleton 讨论的是 Dreamer，但真正更有价值的，是他把 agent 产品成立的前提讲清楚了：如果用户不敢把事情交给它，代理就只是演示，不是产品。</p><div class="panel"><h2>为什么值得看</h2><p>现在大多数 AI 产品讨论还停在能力层：更快、更聪明、更会做事。但这期内容往前走了一步，它在问一个更硬的问题——当软件开始代表你去执行时，什么条件必须先成立？</p></div><div class="panel"><h2>关键信号</h2><ul><li>隐私和安全不是附属选项，而是代理产品的准入门槛。</li><li>“看起来像助手”不够，必须“值得用户放权”。</li><li>未来真正的产品差异，很可能长在 trust architecture 上，而不是单个 feature。</li></ul></div><div class="panel"><h2>这对研究有什么意义</h2><p>如果你在跟 AI 产品方向，这期值得被标记为“主线材料”。因为它不只在讲 Dreamer，而是在讲 agent 产品从 demo 走向真实使用时，必须跨过哪道坎。这类讨论比单个新功能更值钱。</p></div><div class="panel"><h2>原始链接</h2><p><a class="link" href="https://youtube.com/watch?v=TvmxWWfiYWI" target="_blank" rel="noopener noreferrer">https://youtube.com/watch?v=TvmxWWfiYWI</a></p></div></div></body></html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Dreamer 这期最重要的，不是 agent 很强，而是“在什么条件下值得托付”终于被认真讨论。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet"><style>
+:root {
+  --bg: #f7f3ea;
+  --paper: #fffdf8;
+  --paper-2: #f2ede2;
+  --ink: #171717;
+  --muted: #5f5a52;
+  --line: #d9d0c2;
+  --accent: #8c1d18;
+  --link: #0f3d73;
+  --shadow: 0 8px 24px rgba(31, 24, 16, 0.06);
+  --radius: 14px;
+  --max: 1240px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', 'Noto Serif SC', serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: var(--max); margin: 0 auto; padding: 24px 18px 56px; }
+.topline { font-family: Inter, Arial, sans-serif; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.masthead { border-top: 3px solid var(--ink); border-bottom: 1px solid var(--line); padding: 12px 0 18px; margin-bottom: 24px; }
+.masthead h1 { font-size: clamp(2.1rem, 4vw, 4rem); line-height: .95; margin: 8px 0 10px; letter-spacing: -.03em; }
+.masthead p { max-width: 66ch; color: var(--muted); line-height: 1.7; margin: 0; font-family: Inter, Arial, sans-serif; }
+.sectionbar { display:flex; justify-content:space-between; align-items:end; gap:16px; margin: 28px 0 12px; border-bottom:1px solid var(--line); padding-bottom: 8px; }
+.sectionbar h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.02em; }
+.sectionbar p { margin: 0; color: var(--muted); font-family: Inter, Arial, sans-serif; font-size: .95rem; }
+.hero { display:grid; grid-template-columns: 1.3fr .9fr; gap: 18px; }
+.card, .panel { background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.card { padding: 18px; }
+.hero .lead h3 { margin: 12px 0 10px; font-size: clamp(1.7rem, 3vw, 2.7rem); line-height: 1.02; letter-spacing: -.04em; }
+.hero .lead p, .card p, .panel p { color: var(--muted); line-height: 1.75; font-family: Inter, Arial, sans-serif; }
+.kicker { display:inline-block; font-family: Inter, Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.list { display:grid; gap: 12px; }
+.list .item { padding: 14px; background: var(--paper-2); border:1px solid var(--line); }
+.list .item h4 { margin: 0 0 6px; font-size: 1rem; }
+.list .item p { margin: 0; font-size: .95rem; }
+.grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+.tile { display:flex; flex-direction:column; min-height: 260px; }
+.tile h3 { margin: 12px 0 10px; font-size: 1.18rem; line-height: 1.16; }
+.tile p { margin: 0; }
+.tile .meta { margin-top: auto; padding-top: 16px; display:flex; justify-content:space-between; gap:10px; font-family: Inter, Arial, sans-serif; color: var(--muted); font-size: .88rem; }
+.priority { font-family: Inter, Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.back { display:inline-block; margin-bottom: 16px; font-family: Inter, Arial, sans-serif; font-weight: 700; }
+.article { max-width: 860px; }
+.article-head { border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 20px; }
+.article-head h1 { margin: 8px 0 10px; font-size: clamp(2rem, 4vw, 3.6rem); line-height: .98; letter-spacing: -.04em; }
+.article-head .dek { font-size: 1.1rem; line-height: 1.75; color: var(--muted); max-width: 58ch; font-family: Inter, Arial, sans-serif; }
+.meta-row { display:flex; flex-wrap:wrap; gap:12px; margin-top: 14px; font-family: Inter, Arial, sans-serif; color: var(--muted); font-size: .92rem; }
+.article section { margin: 22px 0; }
+.article h2 { font-size: 1.25rem; margin: 0 0 10px; }
+.article p, .article li { font-size: 1.03rem; line-height: 1.85; color: #2a2723; }
+.article ul { padding-left: 20px; }
+.source-box { background: var(--paper); border: 1px solid var(--line); padding: 16px; }
+.raw { white-space: pre-wrap; background: var(--paper-2); border: 1px solid var(--line); padding: 16px; font-family: Inter, Arial, sans-serif; font-size: .96rem; line-height: 1.75; color: #2f2b27; }
+.footer-note { margin-top: 32px; color: var(--muted); font-family: Inter, Arial, sans-serif; font-size: .92rem; }
+@media (max-width: 920px) { .hero, .grid { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .container { padding: 18px 14px 40px; } .grid { grid-template-columns: 1fr; } }
+</style></head><body><div class="container"><div class="article"><a class="back" href="../index.html">← 返回首页</a><div class="article-head"><div class="kicker">Podcast</div><h1>Dreamer 这期最重要的，不是 agent 很强，而是“在什么条件下值得托付”终于被认真讨论。</h1><div class="dek">Latent Space 这期真正有价值的，不只是 Dreamer 这个产品，而是它把 agent 产品成立的前提条件说清楚了：如果用户不敢把事情交给它，代理就只是演示，不是产品。</div><div class="meta-row"><span>来源：Latent Space · Dreamer: the Agent OS for Everyone — David Singleton</span><span><a href="https://youtube.com/watch?v=TvmxWWfiYWI" target="_blank" rel="noopener noreferrer">打开原始链接</a></span></div></div><section><h2>为什么值得看</h2><p>现在大多数 AI 产品讨论还停在能力层：更快、更聪明、更会做事。这期内容往前走了一步，它在问一个更硬的问题——当软件开始代表你去执行时，什么条件必须先成立？</p><p>这个问题的价值在于，它不再把 agent 当成演示玩具，而是把它放进真实产品世界里讨论。</p></section><section><h2>关键信号</h2><ul><li>隐私和安全不是附属选项，而是代理产品的准入门槛。</li><li>“看起来像助手”不够，必须“值得用户放权”。</li><li>未来真正的产品差异，很可能长在 trust architecture 上，而不是单个 feature。</li></ul></section><section><h2>完整整理内容</h2><ul><li>这期内容可以压成一句话：Agent 的门槛，不是更像人，而是更值得被托付。</li><li>如果从产品角度继续展开，就是四件事：第一，隐私必须默认可信；第二，安全必须可验证；第三，用户必须能理解代理的边界；第四，系统必须允许用户在关键时刻重新接管。</li><li>也就是说，代理产品最终比拼的不只是能力展示，而是“能否被放心授权”。</li></ul></section><section><h2>原始可回查链接</h2><ul></ul><p>你可以直接回看原视频：</p><ul></ul></section><section><h2>保留的原始文本片段</h2><div class="raw">Obviously, it's really cool to have software that will work on your behalf, but it's only useful if you can trust it, right? So, privacy and security is very important to us. ...</div></section><section class="source-box"><h2>原始出处</h2><p><a href="https://youtube.com/watch?v=TvmxWWfiYWI" target="_blank" rel="noopener noreferrer">https://youtube.com/watch?v=TvmxWWfiYWI</a></p></section><div class="footer-note">说明：详情页已按你的要求保留“完整整理内容 + 原始链接 + 原始片段”，方便阅读与回查。</div></div></div></body></html>

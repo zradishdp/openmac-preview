@@ -1,1 +1,66 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Watchlist Detail</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet"><style>body{margin:0;font-family:Inter,'Noto Sans SC',sans-serif;background:#f6f8fc;color:#101828}.container{max-width:860px;margin:0 auto;padding:28px 20px 60px}.back{display:inline-block;margin-bottom:20px;color:#2563eb;font-weight:700;text-decoration:none}.tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#ede9fe;color:#6d28d9;font-size:12px;font-weight:700}.title{font-size:clamp(2rem,4vw,3.4rem);line-height:1.02;letter-spacing:-.04em;margin:14px 0 12px}.lead{color:#667085;line-height:1.75;font-size:1.05rem}.panel{background:#fff;border:1px solid #d9e2f1;border-radius:18px;padding:18px;margin-top:18px;box-shadow:0 10px 30px rgba(16,24,40,.08)}p,li{line-height:1.75;color:#475467}ul{padding-left:18px}</style></head><body><div class="container"><a class="back" href="../index.html">← 返回首页</a><span class="tag">Watchlist</span><div class="title">在高噪音信息流里，更应该追踪“长期预测能力”，而不是单次高光表达。</div><p class="lead">Swyx、Karpathy 这一类账号的价值，很多时候不在于今天这条 tweet 本身，而在于他们是否长期输出经得起时间检验的判断。研究上，这比追热点更值钱。</p><div class="panel"><ul><li>把人按“预测命中率 / 信噪比 / 持续性”而不是粉丝量来分层。</li><li>当一条内容信息密度不高时，别急着丢，先判断作者是否值得长期跟踪。</li><li>账号价值不仅在内容本身，也在其作为“长期观察对象”的属性。</li></ul></div><div class="panel"><p>这对研究系统的意义很直接：你要建立的不是一个信息收藏夹，而是一套可持续跟踪“谁值得信”的观察池。</p></div></div></body></html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>在高噪音信息流里，更应该追踪“长期预测能力”，而不是单次高光表达。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet"><style>
+:root {
+  --bg: #f7f3ea;
+  --paper: #fffdf8;
+  --paper-2: #f2ede2;
+  --ink: #171717;
+  --muted: #5f5a52;
+  --line: #d9d0c2;
+  --accent: #8c1d18;
+  --link: #0f3d73;
+  --shadow: 0 8px 24px rgba(31, 24, 16, 0.06);
+  --radius: 14px;
+  --max: 1240px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', 'Noto Serif SC', serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: var(--max); margin: 0 auto; padding: 24px 18px 56px; }
+.topline { font-family: Inter, Arial, sans-serif; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.masthead { border-top: 3px solid var(--ink); border-bottom: 1px solid var(--line); padding: 12px 0 18px; margin-bottom: 24px; }
+.masthead h1 { font-size: clamp(2.1rem, 4vw, 4rem); line-height: .95; margin: 8px 0 10px; letter-spacing: -.03em; }
+.masthead p { max-width: 66ch; color: var(--muted); line-height: 1.7; margin: 0; font-family: Inter, Arial, sans-serif; }
+.sectionbar { display:flex; justify-content:space-between; align-items:end; gap:16px; margin: 28px 0 12px; border-bottom:1px solid var(--line); padding-bottom: 8px; }
+.sectionbar h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.02em; }
+.sectionbar p { margin: 0; color: var(--muted); font-family: Inter, Arial, sans-serif; font-size: .95rem; }
+.hero { display:grid; grid-template-columns: 1.3fr .9fr; gap: 18px; }
+.card, .panel { background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.card { padding: 18px; }
+.hero .lead h3 { margin: 12px 0 10px; font-size: clamp(1.7rem, 3vw, 2.7rem); line-height: 1.02; letter-spacing: -.04em; }
+.hero .lead p, .card p, .panel p { color: var(--muted); line-height: 1.75; font-family: Inter, Arial, sans-serif; }
+.kicker { display:inline-block; font-family: Inter, Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.list { display:grid; gap: 12px; }
+.list .item { padding: 14px; background: var(--paper-2); border:1px solid var(--line); }
+.list .item h4 { margin: 0 0 6px; font-size: 1rem; }
+.list .item p { margin: 0; font-size: .95rem; }
+.grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+.tile { display:flex; flex-direction:column; min-height: 260px; }
+.tile h3 { margin: 12px 0 10px; font-size: 1.18rem; line-height: 1.16; }
+.tile p { margin: 0; }
+.tile .meta { margin-top: auto; padding-top: 16px; display:flex; justify-content:space-between; gap:10px; font-family: Inter, Arial, sans-serif; color: var(--muted); font-size: .88rem; }
+.priority { font-family: Inter, Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.back { display:inline-block; margin-bottom: 16px; font-family: Inter, Arial, sans-serif; font-weight: 700; }
+.article { max-width: 860px; }
+.article-head { border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 20px; }
+.article-head h1 { margin: 8px 0 10px; font-size: clamp(2rem, 4vw, 3.6rem); line-height: .98; letter-spacing: -.04em; }
+.article-head .dek { font-size: 1.1rem; line-height: 1.75; color: var(--muted); max-width: 58ch; font-family: Inter, Arial, sans-serif; }
+.meta-row { display:flex; flex-wrap:wrap; gap:12px; margin-top: 14px; font-family: Inter, Arial, sans-serif; color: var(--muted); font-size: .92rem; }
+.article section { margin: 22px 0; }
+.article h2 { font-size: 1.25rem; margin: 0 0 10px; }
+.article p, .article li { font-size: 1.03rem; line-height: 1.85; color: #2a2723; }
+.article ul { padding-left: 20px; }
+.source-box { background: var(--paper); border: 1px solid var(--line); padding: 16px; }
+.raw { white-space: pre-wrap; background: var(--paper-2); border: 1px solid var(--line); padding: 16px; font-family: Inter, Arial, sans-serif; font-size: .96rem; line-height: 1.75; color: #2f2b27; }
+.footer-note { margin-top: 32px; color: var(--muted); font-family: Inter, Arial, sans-serif; font-size: .92rem; }
+@media (max-width: 920px) { .hero, .grid { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .container { padding: 18px 14px 40px; } .grid { grid-template-columns: 1fr; } }
+</style></head><body><div class="container"><div class="article"><a class="back" href="../index.html">← 返回首页</a><div class="article-head"><div class="kicker">Watchlist</div><h1>在高噪音信息流里，更应该追踪“长期预测能力”，而不是单次高光表达。</h1><div class="dek">Swyx、Karpathy 这一类账号的价值，很多时候不在于今天这条内容本身，而在于他们是否长期输出经得起时间检验的判断。研究上，这比追热点更值钱。</div><div class="meta-row"><span>来源：Swyx / Karpathy</span><span><a href="https://x.com/swyx/status/2034893748916953450" target="_blank" rel="noopener noreferrer">打开原始链接</a></span></div></div><section><h2>为什么值得单独成页</h2><p>因为研究系统最容易犯的错，就是把“今天看起来聪明的人”和“长期值得跟踪的人”混为一谈。</p></section><section><h2>你真正要建立的东西</h2><ul><li>把人按“预测命中率 / 信噪比 / 持续性”而不是粉丝量来分层。</li><li>当一条内容信息密度不高时，别急着丢，先判断作者是否值得长期跟踪。</li><li>账号价值不仅在内容本身，也在其作为“长期观察对象”的属性。</li></ul></section><section><h2>完整整理内容</h2><p>这类账号更适合进入 watchlist，而不是普通资讯池。</p><p>因为你未来真正想复用的，不只是他们今天说了什么，而是他们对哪些主题持续给出有解释力的判断。</p></section><section><h2>原始可回查链接</h2><ul></ul><p>Swyx 原帖：</p><ul></ul><p>Karpathy 原帖：</p><ul></ul></section><section><h2>保留的原始文本片段</h2><div class="raw">this talk was 2.5 years ago ... i might never top my 2023 record ...
+Thank you Sarah, my pleasure to come on the pod!...</div></section><section class="source-box"><h2>原始出处</h2><p><a href="https://x.com/swyx/status/2034893748916953450" target="_blank" rel="noopener noreferrer">https://x.com/swyx/status/2034893748916953450</a></p><p><a href="https://x.com/karpathy/status/2035158351357911527" target="_blank" rel="noopener noreferrer">https://x.com/karpathy/status/2035158351357911527</a></p></section><div class="footer-note">说明：详情页已按你的要求保留“完整整理内容 + 原始链接 + 原始片段”，方便阅读与回查。</div></div></div></body></html>

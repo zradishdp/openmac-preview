@@ -1,187 +1,100 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Builders Digest</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f4f6fb;
-      --panel: #ffffff;
-      --panel-soft: #eef3fb;
-      --text: #101828;
-      --muted: #667085;
-      --line: #d9e2f1;
-      --blue: #3b82f6;
-      --green: #0f9f77;
-      --orange: #f59e0b;
-      --purple: #8b5cf6;
-      --shadow: 0 10px 30px rgba(16,24,40,.08);
-      --radius: 18px;
-      --radius-lg: 24px;
-      --max: 1280px;
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: Inter, 'Noto Sans SC', sans-serif; background: var(--bg); color: var(--text); }
-    a { color: inherit; text-decoration: none; }
-    .container { max-width: var(--max); margin: 0 auto; padding: 28px 20px 48px; }
-    .topbar { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; margin-bottom: 28px; }
-    .brand { display:flex; flex-direction:column; gap:10px; }
-    .eyebrow { font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:700; }
-    h1 { margin:0; font-size: clamp(2rem, 4vw, 3.8rem); line-height: .95; letter-spacing:-.04em; max-width: 10ch; }
-    .subtitle { margin:0; color:var(--muted); font-size: 1.02rem; max-width: 60ch; line-height:1.6; }
-    .meta-card { background: linear-gradient(135deg, #111827 0%, #1f2937 100%); color:#fff; border-radius: var(--radius-lg); padding: 18px; min-width: 300px; box-shadow: var(--shadow); }
-    .meta-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
-    .meta-grid div { background: rgba(255,255,255,.08); padding: 12px; border-radius: 14px; }
-    .meta-grid strong { display:block; font-size:1.4rem; margin-top:6px; }
-    .section-head { display:flex; justify-content:space-between; align-items:end; gap:16px; margin: 34px 0 14px; }
-    .section-head h2 { margin:0; font-size:1.35rem; letter-spacing:-.03em; }
-    .section-head p { margin:0; color:var(--muted); font-size:.95rem; }
-    .hero-grid { display:grid; grid-template-columns: 1.35fr .95fr; gap:18px; }
-    .card { background: var(--panel); border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
-    .card.pad { padding: 18px; }
-    .tag { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.02em; }
-    .tag.blue { background:#dbeafe; color:#1d4ed8; }
-    .tag.green { background:#d1fae5; color:#047857; }
-    .tag.orange { background:#fef3c7; color:#b45309; }
-    .tag.purple { background:#ede9fe; color:#6d28d9; }
-    .lead-title { margin:14px 0 10px; font-size: clamp(1.5rem, 3vw, 2.4rem); line-height:1.02; letter-spacing:-.04em; max-width: 15ch; }
-    .lead-copy { color:var(--muted); line-height:1.7; font-size:1rem; max-width: 58ch; }
-    .bullets { margin:16px 0 0; padding-left: 18px; color:var(--muted); line-height:1.7; }
-    .bullets li { margin-bottom: 8px; }
-    .mini-list { display:grid; gap:12px; }
-    .mini-item { padding:14px; border-radius:16px; background: var(--panel-soft); }
-    .mini-item h3 { margin:0 0 6px; font-size:1rem; letter-spacing:-.02em; }
-    .mini-item p { margin:0; color:var(--muted); line-height:1.6; font-size:.95rem; }
-    .grid { display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:18px; }
-    .tile { display:flex; flex-direction:column; min-height: 250px; }
-    .tile .top { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; margin-bottom: 14px; }
-    .tile h3 { margin:0; font-size:1.2rem; line-height:1.12; letter-spacing:-.03em; }
-    .tile p { margin: 0; color:var(--muted); line-height:1.65; }
-    .tile .footer { margin-top:auto; padding-top:16px; display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:.88rem; }
-    .cta { font-weight:700; color: var(--blue); }
-    .priority { font-size:12px; font-weight:700; color: var(--text); background:#eef2ff; padding:6px 9px; border-radius:999px; }
-    .footer-note { margin-top: 36px; color: var(--muted); font-size: .92rem; }
-    @media (max-width: 980px) {
-      .topbar, .hero-grid, .grid { grid-template-columns:1fr; display:grid; }
-      .meta-card { min-width: auto; }
-    }
-    @media (max-width: 760px) {
-      .grid { grid-template-columns: 1fr; }
-      .container { padding: 20px 16px 36px; }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="topbar">
-      <div class="brand">
-        <div class="eyebrow">AI Builders Digest · Daily Brief</div>
-        <h1>先扫重点，再决定读哪一条。</h1>
-        <p class="subtitle">这不是演示页，而是一份给高频阅读准备的 digest 首页。你先看豆腐块，抓住今天值得点开的信号，再进详情页读完整提炼。</p>
-      </div>
-      <div class="meta-card">
-        <div class="eyebrow" style="color:rgba(255,255,255,.72)">Today at a glance</div>
-        <div class="meta-grid">
-          <div><span>Podcast</span><strong>1</strong></div>
-          <div><span>Builders</span><strong>16</strong></div>
-          <div><span>Themes</span><strong>3</strong></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-head">
-      <div>
-        <h2>Top 3 今日最值得看</h2>
-        <p>先从最有密度的三张卡片开始。</p>
-      </div>
-    </div>
-
-    <div class="hero-grid">
-      <a class="card pad" href="detail/podcast-dreamer.html">
-        <span class="tag orange">Podcast</span>
-        <h2 class="lead-title">Dreamer 这期真正有价值的，不是 agent 很强，而是信任边界终于被正面讨论。</h2>
-        <p class="lead-copy">David Singleton 这期把 agent 产品最关键的问题说清楚了：只有当用户敢把事情交给软件去做，代理这件事才成立。隐私、安全、可控性，不是附属 feature，而是入口条件。</p>
-        <ul class="bullets">
-          <li>trust architecture 开始变成产品层主命题</li>
-          <li>真正的竞争力不只是更聪明，而是更值得托付</li>
-          <li>这类内容值得进长期观察池</li>
-        </ul>
-      </a>
-      <div class="mini-list">
-        <a class="card pad mini-item" href="detail/theme-fast-feedback.html">
-          <span class="tag green">Theme</span>
-          <h3>更短反馈回路，正在变成 builder 共识</h3>
-          <p>少写文档，多做 demo 与 eval，先用最小原型去见用户，再决定哪些复杂度值得留下。</p>
-        </a>
-        <a class="card pad mini-item" href="detail/builder-peter-cat.html">
-          <span class="tag blue">Builders</span>
-          <h3>Peter Yang + Cat Wu：一线产品人对 AI 迭代方法的共识</h3>
-          <p>他们强调的不是“多做点东西”，而是如何让错误更早暴露、让验证更快发生。</p>
-        </a>
-        <a class="card pad mini-item" href="detail/watchlist-forecasters.html">
-          <span class="tag purple">Watchlist</span>
-          <h3>别只追观点，开始追“长期预测能力”</h3>
-          <p>Swyx / Karpathy 这一类账号的价值，不只是今天说了什么，而是谁值得被纳入长期观察。</p>
-        </a>
-      </div>
-    </div>
-
-    <div class="section-head">
-      <div>
-        <h2>豆腐块浏览</h2>
-        <p>按类型扫一遍，哪个卡片有兴趣再点进去。</p>
-      </div>
-    </div>
-
-    <div class="grid">
-      <a class="card pad tile" href="detail/podcast-dreamer.html">
-        <div class="top"><span class="tag orange">Podcast</span><span class="priority">High</span></div>
-        <h3>Agent OS 讨论终于从“能力演示”转向“托付条件”</h3>
-        <p>这期最值得记的不是 Dreamer 做了什么，而是把代理产品成立的前提条件讲明白了：隐私、安全、可控性、信任边界。</p>
-        <div class="footer"><span>Latent Space</span><span class="cta">查看详情 →</span></div>
-      </a>
-
-      <a class="card pad tile" href="detail/builder-peter-cat.html">
-        <div class="top"><span class="tag blue">Builders</span><span class="priority">High</span></div>
-        <h3>产品侧的方法论正在收敛：短 sprint、demo 优先、简单先行</h3>
-        <p>Peter Yang 和 Cat Wu 这批内容的共同点很强：少做纸面规划，多做快速验证，让复杂度接受现实考验。</p>
-        <div class="footer"><span>Peter Yang / Cat Wu</span><span class="cta">查看详情 →</span></div>
-      </a>
-
-      <a class="card pad tile" href="detail/theme-fast-feedback.html">
-        <div class="top"><span class="tag green">Theme</span><span class="priority">High</span></div>
-        <h3>今天最强主题：快速反馈回路比更大规划更重要</h3>
-        <p>这不是效率鸡汤，而是一种在模型快速变化时代更适应现实的方法论：先跑起来，再决定优化什么。</p>
-        <div class="footer"><span>Repeated Signal</span><span class="cta">查看详情 →</span></div>
-      </a>
-
-      <a class="card pad tile" href="detail/watchlist-forecasters.html">
-        <div class="top"><span class="tag purple">Watchlist</span><span class="priority">Med</span></div>
-        <h3>研究里真正值钱的是“谁有持续预测能力”</h3>
-        <p>不是所有高频发声者都值得长期跟。更应该追踪的是那些能跨时间维度持续给出有效判断的人。</p>
-        <div class="footer"><span>Swyx / Karpathy</span><span class="cta">查看详情 →</span></div>
-      </a>
-
-      <a class="card pad tile" href="detail/consensus-three-lines.html">
-        <div class="top"><span class="tag green">Consensus</span><span class="priority">Med</span></div>
-        <h3>今天这批内容压缩成最后三句，会是什么</h3>
-        <p>如果你没时间细读，直接看这页就够：agent 的门槛是可信，产品的关键是验证更快，复杂系统会放大失败。</p>
-        <div class="footer"><span>3-line summary</span><span class="cta">查看详情 →</span></div>
-      </a>
-
-      <a class="card pad tile" href="detail/how-to-use-this-digest.html">
-        <div class="top"><span class="tag blue">Workflow</span><span class="priority">Med</span></div>
-        <h3>这份 digest 最好的用法，不是看完，而是纳入研究系统</h3>
-        <p>把它当研究输入而不是阅读材料：抓取、提炼、打标签、复盘。这样它才会变成长期资产。</p>
-        <div class="footer"><span>Usage</span><span class="cta">查看详情 →</span></div>
-      </a>
-    </div>
-
-    <p class="footer-note">这一版是 digest site v1：首页负责筛选，详情页负责讲透。后面可以再把它接回自动生成链路。</p>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI Builders Digest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f3ea;
+  --paper: #fffdf8;
+  --paper-2: #f2ede2;
+  --ink: #171717;
+  --muted: #5f5a52;
+  --line: #d9d0c2;
+  --accent: #8c1d18;
+  --link: #0f3d73;
+  --shadow: 0 8px 24px rgba(31, 24, 16, 0.06);
+  --radius: 14px;
+  --max: 1240px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', 'Noto Serif SC', serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: var(--max); margin: 0 auto; padding: 24px 18px 56px; }
+.topline { font-family: Inter, Arial, sans-serif; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.masthead { border-top: 3px solid var(--ink); border-bottom: 1px solid var(--line); padding: 12px 0 18px; margin-bottom: 24px; }
+.masthead h1 { font-size: clamp(2.1rem, 4vw, 4rem); line-height: .95; margin: 8px 0 10px; letter-spacing: -.03em; }
+.masthead p { max-width: 66ch; color: var(--muted); line-height: 1.7; margin: 0; font-family: Inter, Arial, sans-serif; }
+.sectionbar { display:flex; justify-content:space-between; align-items:end; gap:16px; margin: 28px 0 12px; border-bottom:1px solid var(--line); padding-bottom: 8px; }
+.sectionbar h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.02em; }
+.sectionbar p { margin: 0; color: var(--muted); font-family: Inter, Arial, sans-serif; font-size: .95rem; }
+.hero { display:grid; grid-template-columns: 1.3fr .9fr; gap: 18px; }
+.card, .panel { background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.card { padding: 18px; }
+.hero .lead h3 { margin: 12px 0 10px; font-size: clamp(1.7rem, 3vw, 2.7rem); line-height: 1.02; letter-spacing: -.04em; }
+.hero .lead p, .card p, .panel p { color: var(--muted); line-height: 1.75; font-family: Inter, Arial, sans-serif; }
+.kicker { display:inline-block; font-family: Inter, Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.list { display:grid; gap: 12px; }
+.list .item { padding: 14px; background: var(--paper-2); border:1px solid var(--line); }
+.list .item h4 { margin: 0 0 6px; font-size: 1rem; }
+.list .item p { margin: 0; font-size: .95rem; }
+.grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+.tile { display:flex; flex-direction:column; min-height: 260px; }
+.tile h3 { margin: 12px 0 10px; font-size: 1.18rem; line-height: 1.16; }
+.tile p { margin: 0; }
+.tile .meta { margin-top: auto; padding-top: 16px; display:flex; justify-content:space-between; gap:10px; font-family: Inter, Arial, sans-serif; color: var(--muted); font-size: .88rem; }
+.priority { font-family: Inter, Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.back { display:inline-block; margin-bottom: 16px; font-family: Inter, Arial, sans-serif; font-weight: 700; }
+.article { max-width: 860px; }
+.article-head { border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 20px; }
+.article-head h1 { margin: 8px 0 10px; font-size: clamp(2rem, 4vw, 3.6rem); line-height: .98; letter-spacing: -.04em; }
+.article-head .dek { font-size: 1.1rem; line-height: 1.75; color: var(--muted); max-width: 58ch; font-family: Inter, Arial, sans-serif; }
+.meta-row { display:flex; flex-wrap:wrap; gap:12px; margin-top: 14px; font-family: Inter, Arial, sans-serif; color: var(--muted); font-size: .92rem; }
+.article section { margin: 22px 0; }
+.article h2 { font-size: 1.25rem; margin: 0 0 10px; }
+.article p, .article li { font-size: 1.03rem; line-height: 1.85; color: #2a2723; }
+.article ul { padding-left: 20px; }
+.source-box { background: var(--paper); border: 1px solid var(--line); padding: 16px; }
+.raw { white-space: pre-wrap; background: var(--paper-2); border: 1px solid var(--line); padding: 16px; font-family: Inter, Arial, sans-serif; font-size: .96rem; line-height: 1.75; color: #2f2b27; }
+.footer-note { margin-top: 32px; color: var(--muted); font-family: Inter, Arial, sans-serif; font-size: .92rem; }
+@media (max-width: 920px) { .hero, .grid { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .container { padding: 18px 14px 40px; } .grid { grid-template-columns: 1fr; } }
+</style></head><body>
+<div class="container">
+  <div class="masthead">
+    <div class="topline">AI Builders Digest · Sunday Edition</div>
+    <h1>先浏览头版，再决定进入哪篇全文。</h1>
+    <p>这一版按媒体阅读体验收：首页负责筛选重点，详情页负责给出完整内容、完整提炼和可回查的原始链接。方向参考传统报纸网站的阅读秩序，而不是官网式展示。</p>
   </div>
-</body>
-</html>
+
+  <div class="sectionbar"><div><h2>头版摘要</h2><p>今天最值得优先点开的 3 条。</p></div></div>
+  <div class="hero">
+    <a class="card lead" href="detail/podcast-dreamer.html">
+      <span class="kicker">Podcast</span>
+      <h3>Dreamer 这期最值得看的，不是 agent 更强，而是“什么条件下才值得托付”被正面放到了桌面上。</h3>
+      <p>这条是今天的头版。它真正有价值的地方不在 Dreamer 这个产品本身，而在于它把 agent 产品的成立条件讲清楚了：隐私、安全、可控性、信任边界，是入口，不是附属品。</p>
+    </a>
+    <div class="list">
+      <a class="item" href="detail/theme-fast-feedback.html"><h4>更短反馈回路，正在变成 builder 的稳定共识</h4><p>少写大规划、多做 demo 和 eval、让现实尽早暴露错误。</p></a>
+      <a class="item" href="detail/builder-peter-cat.html"><h4>Peter Yang + Cat Wu：一线产品方法论开始收敛</h4><p>短 sprint、原型优先、复杂度延后，不再只是个人偏好。</p></a>
+      <a class="item" href="detail/watchlist-forecasters.html"><h4>别只追观点，开始追谁有长期预测能力</h4><p>研究里真正值钱的，是经得起时间检验的人。</p></a>
+    </div>
+  </div>
+
+  <div class="sectionbar"><div><h2>全部卡片</h2><p>像读报纸首页一样扫一遍，再决定点进哪篇。</p></div></div>
+  <div class="grid">
+    <a class="card tile" href="detail/podcast-dreamer.html"><span class="kicker">Podcast</span><h3>Agent 产品第一次更清楚地谈“托付条件”</h3><p>真正的关键问题不是会不会做，而是用户敢不敢把事情交出去。</p><div class="meta"><span>Latent Space</span><span class="priority">High priority</span></div></a>
+    <a class="card tile" href="detail/builder-peter-cat.html"><span class="kicker">Builders</span><h3>Peter Yang 与 Cat Wu 的方法论，值得并排读</h3><p>这不是两条推文，而更像一种收敛中的团队纪律。</p><div class="meta"><span>Product Practice</span><span class="priority">High priority</span></div></a>
+    <a class="card tile" href="detail/theme-fast-feedback.html"><span class="kicker">Theme</span><h3>快速反馈回路比更大规划更重要</h3><p>在模型变化太快的环境里，验证能力开始胜过纸面规划能力。</p><div class="meta"><span>Repeated signal</span><span class="priority">High priority</span></div></a>
+    <a class="card tile" href="detail/watchlist-forecasters.html"><span class="kicker">Watchlist</span><h3>研究应该开始跟踪“长期预测能力”</h3><p>谁值得长期观察，往往比他今天说了什么更重要。</p><div class="meta"><span>Swyx / Karpathy</span><span class="priority">Medium</span></div></a>
+    <a class="card tile" href="detail/consensus-three-lines.html"><span class="kicker">Consensus</span><h3>今天所有内容，压缩成最后三句</h3><p>如果你没时间读完整份 digest，至少先带走这三句。</p><div class="meta"><span>3-line summary</span><span class="priority">Medium</span></div></a>
+    <a class="card tile" href="detail/how-to-use-this-digest.html"><span class="kicker">Workflow</span><h3>这份 digest 应该怎么用，才会变成长期资产</h3><p>别把它当资讯流，而要把它接进你的研究系统。</p><div class="meta"><span>Usage</span><span class="priority">Medium</span></div></a>
+  </div>
+
+  <div class="footer-note">注：详情页已改成“完整展示 + 原始链接”结构，便于回查原文。</div>
+</div></body></html>
