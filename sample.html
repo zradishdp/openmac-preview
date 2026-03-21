@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Follow Builders Digest Sample</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ===========================================
+       THEME — inspired by frontend-slides / Electric Studio
+       =========================================== */
+    :root {
+      --bg-dark: #081018;
+      --bg-panel: #0e1726;
+      --bg-soft: #121e31;
+      --bg-white: #f4f7fb;
+      --text-light: #f8fbff;
+      --text-dim: #b7c4d7;
+      --text-dark: #0b1320;
+      --accent-blue: #4b7cff;
+      --accent-cyan: #72e2ff;
+      --accent-mint: #a7ffd8;
+      --accent-line: rgba(255,255,255,0.1);
+      --accent-glow: rgba(75, 124, 255, 0.28);
+      --shadow: 0 20px 60px rgba(0,0,0,0.28);
+      --font-display: 'Manrope', 'Noto Sans SC', sans-serif;
+      --font-body: 'Noto Sans SC', 'Manrope', sans-serif;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-normal: 0.6s;
+      --title-size: clamp(2rem, 6vw, 5rem);
+      --h2-size: clamp(1.35rem, 3.5vw, 2.8rem);
+      --h3-size: clamp(1rem, 2.2vw, 1.5rem);
+      --body-size: clamp(0.8rem, 1.35vw, 1.05rem);
+      --small-size: clamp(0.7rem, 0.95vw, 0.84rem);
+      --slide-padding: clamp(1rem, 4vw, 4rem);
+      --content-gap: clamp(1rem, 2vw, 2rem);
+      --element-gap: clamp(0.5rem, 1vw, 1rem);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ===========================================
+       VIEWPORT FITTING BASE
+       =========================================== */
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      background: var(--bg-dark);
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text-light);
+      background:
+        radial-gradient(circle at top right, rgba(114, 226, 255, 0.12), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(75, 124, 255, 0.15), transparent 24%),
+        linear-gradient(180deg, #081018 0%, #0b1320 100%);
+    }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-height: 100%;
+      overflow: hidden;
+      padding: var(--slide-padding);
+      gap: var(--content-gap);
+      position: relative;
+      z-index: 2;
+    }
+
+    img { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+
+    @media (max-height: 700px) {
+      :root {
+        --slide-padding: clamp(0.75rem, 3vw, 2rem);
+        --content-gap: clamp(0.5rem, 1.4vw, 1rem);
+        --title-size: clamp(1.4rem, 4.6vw, 2.8rem);
+        --h2-size: clamp(1.05rem, 3vw, 1.8rem);
+      }
+    }
+
+    @media (max-height: 500px) {
+      :root {
+        --slide-padding: clamp(0.5rem, 2vw, 1rem);
+        --body-size: clamp(0.68rem, 1vw, 0.85rem);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .split-grid,
+      .signal-grid,
+      .two-col,
+      .insight-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .nav-dots { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ===========================================
+       GLOBAL UI
+       =========================================== */
+    .progress-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+      box-shadow: 0 0 24px var(--accent-glow);
+      transition: width 0.2s linear;
+    }
+
+    .nav-dots {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    .nav-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.08);
+      cursor: pointer;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .nav-dot.active {
+      background: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+      transform: scale(1.25);
+    }
+
+    .corner-label {
+      position: absolute;
+      top: clamp(0.9rem, 2vw, 1.5rem);
+      left: clamp(1rem, 3vw, 2rem);
+      font-size: var(--small-size);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      z-index: 3;
+    }
+
+    .slide-number {
+      position: absolute;
+      top: clamp(1rem, 3vw, 2rem);
+      right: clamp(1rem, 3vw, 2rem);
+      font-size: clamp(0.75rem, 1vw, 0.9rem);
+      color: rgba(255,255,255,0.55);
+      z-index: 3;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity var(--duration-normal) var(--ease-out-expo),
+                  transform var(--duration-normal) var(--ease-out-expo);
+    }
+
+    .slide.visible .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide.visible .reveal:nth-child(1) { transition-delay: 0.05s; }
+    .slide.visible .reveal:nth-child(2) { transition-delay: 0.12s; }
+    .slide.visible .reveal:nth-child(3) { transition-delay: 0.2s; }
+    .slide.visible .reveal:nth-child(4) { transition-delay: 0.28s; }
+    .slide.visible .reveal:nth-child(5) { transition-delay: 0.36s; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: var(--small-size);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 42px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan));
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+    }
+
+    h1 { font-size: var(--title-size); font-weight: 800; max-width: 10ch; }
+    h2 { font-size: var(--h2-size); font-weight: 800; max-width: 12ch; }
+    h3 { font-size: var(--h3-size); font-weight: 800; }
+    p, li { font-size: var(--body-size); line-height: 1.55; color: var(--text-dim); }
+
+    .lead {
+      max-width: 60ch;
+      font-size: clamp(0.95rem, 1.5vw, 1.18rem);
+      color: rgba(248,251,255,0.88);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .pill {
+      padding: 0.6rem 0.95rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text-light);
+      font-size: var(--small-size);
+      backdrop-filter: blur(10px);
+    }
+
+    /* ===========================================
+       SLIDE-SPECIFIC LAYOUTS
+       =========================================== */
+    .hero::before,
+    .section-dark::before,
+    .section-light::before {
+      content: "";
+      position: absolute;
+      inset: auto -10% -20% auto;
+      width: 44vw;
+      height: 44vw;
+      min-width: 260px;
+      min-height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(75,124,255,0.25) 0%, rgba(75,124,255,0.08) 40%, transparent 70%);
+      filter: blur(16px);
+      z-index: 0;
+    }
+
+    .hero .slide-content {
+      justify-content: space-between;
+      padding-top: clamp(4rem, 10vh, 7rem);
+      padding-bottom: clamp(2rem, 6vh, 4rem);
+    }
+
+    .hero-top {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: clamp(1rem, 3vw, 3rem);
+      align-items: start;
+    }
+
+    .hero-meta {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-xl);
+      padding: 1.2rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-meta strong {
+      display: block;
+      font-size: clamp(1.2rem, 2.6vw, 2rem);
+      color: var(--text-light);
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--accent-line);
+    }
+
+    .hero-bottom p { max-width: 46ch; }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: clamp(1rem, 2.5vw, 2rem);
+      align-items: stretch;
+    }
+
+    .white-panel {
+      background: var(--bg-white);
+      color: var(--text-dark);
+      border-radius: var(--radius-xl);
+      padding: clamp(1.2rem, 3vw, 2rem);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .white-panel p,
+    .white-panel li { color: rgba(11,19,32,0.76); }
+
+    .dark-panel {
+      background: linear-gradient(180deg, rgba(18,30,49,0.95), rgba(9,16,28,0.98));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-xl);
+      padding: clamp(1.2rem, 3vw, 2rem);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stat-box {
+      padding: 1rem;
+      border-radius: var(--radius-lg);
+      background: rgba(75,124,255,0.1);
+      border: 1px solid rgba(75,124,255,0.18);
+    }
+
+    .stat-box .label {
+      font-size: var(--small-size);
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .stat-box .value {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: clamp(1.2rem, 2.8vw, 2rem);
+      font-weight: 800;
+      color: var(--text-light);
+      font-family: var(--font-display);
+    }
+
+    .signal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(0.75rem, 1.5vw, 1rem);
+    }
+
+    .signal-card {
+      padding: 1rem;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      min-height: 180px;
+    }
+
+    .signal-card h3 { margin-bottom: 0.7rem; }
+
+    .signal-card a,
+    .quote-card a { color: var(--accent-cyan); text-decoration: none; }
+
+    .quote-card {
+      border-left: 4px solid var(--accent-blue);
+      padding: 1rem 1rem 1rem 1.2rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(0.8rem, 1.8vw, 1.2rem);
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: clamp(1rem, 2vw, 1.6rem);
+      align-items: start;
+    }
+
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 1.1rem;
+    }
+
+    .bullet-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.72em;
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 14px var(--accent-glow);
+    }
+
+    .summary-box {
+      background: linear-gradient(180deg, rgba(75,124,255,0.12), rgba(75,124,255,0.04));
+      border: 1px solid rgba(114,226,255,0.14);
+      border-radius: var(--radius-xl);
+      padding: clamp(1rem, 2vw, 1.6rem);
+    }
+
+    .footer-note {
+      font-size: var(--small-size);
+      color: rgba(255,255,255,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-wrap" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+  <nav class="nav-dots" id="navDots" aria-label="幻灯片导航"></nav>
+
+  <section class="slide hero">
+    <div class="corner-label reveal">follow builders / digest sample</div>
+    <div class="slide-number">01 / 06</div>
+    <div class="slide-content">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow reveal">HTML digest sample</div>
+          <h1 class="reveal">把 AI Builders 摘要做成真正能看的 Web Slides</h1>
+          <p class="lead reveal">这是一版按 <strong>frontend-slides</strong> 思路重做的单文件 HTML 样例：全屏分页、键盘导航、简洁高对比、适合直接浏览和后续继续美化。</p>
+        </div>
+        <div class="hero-meta reveal">
+          <p class="footer-note">今日内容概览</p>
+          <strong>1 个 Podcast</strong>
+          <p>Latent Space — Dreamer: the Agent OS for Everyone</p>
+          <div style="height:1px;background:rgba(255,255,255,0.08);margin:1rem 0;"></div>
+          <strong>16 位 Builders</strong>
+          <p>本样例只提炼其中最有代表性的几条信号。</p>
+        </div>
+      </div>
+      <div class="hero-bottom reveal">
+        <div class="pill-row">
+          <span class="pill">Single HTML</span>
+          <span class="pill">Inline CSS / JS</span>
+          <span class="pill">Keyboard + Wheel + Touch</span>
+        </div>
+        <p>这不是最终设计稿，而是一个能用、能继续扩的前端化摘要模板。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-dark">
+    <div class="corner-label reveal">today's thesis</div>
+    <div class="slide-number">02 / 06</div>
+    <div class="slide-content">
+      <div class="split-grid">
+        <div class="white-panel reveal">
+          <div class="eyebrow" style="color:#4b7cff;">主结论</div>
+          <h2 style="color:#0b1320; max-width: 11ch;">AI 产品正在从功能堆叠，转向可信代理</h2>
+          <p>今天这批内容里反复出现的不是“哪个模型更强”，而是两个更扎实的问题：</p>
+          <ul class="bullet-list">
+            <li>你是否敢把任务真正托付给 agent？</li>
+            <li>团队是否能在更短反馈回路里快速验证价值？</li>
+          </ul>
+        </div>
+        <div class="dark-panel reveal">
+          <div class="stat-box">
+            <span class="label">一句话压缩</span>
+            <span class="value">Trust &amp; Speed</span>
+          </div>
+          <div class="quote-card">
+            <p>能力演示已经不稀缺，<strong>可信任的执行边界</strong>和<strong>更短的验证回路</strong>，才开始变成真正的产品差异。</p>
+          </div>
+          <p>如果把它翻成研究语言：值得跟踪的不是单个新功能，而是那些能跨产品、跨团队重复出现的方法论。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-dark">
+    <div class="corner-label reveal">podcast signal</div>
+    <div class="slide-number">03 / 06</div>
+    <div class="slide-content">
+      <div class="eyebrow reveal">Latent Space</div>
+      <h2 class="reveal">Dreamer: the Agent OS for Everyone — David Singleton</h2>
+      <div class="signal-grid">
+        <article class="signal-card reveal">
+          <h3>核心命题</h3>
+          <p>代理型软件真正有用，不在于它“会做事”，而在于你是否愿意让它代表你去做事。</p>
+        </article>
+        <article class="signal-card reveal">
+          <h3>关键约束</h3>
+          <p>隐私、安全、可控性、信任边界，决定了 agent 能不能从 demo 变成真实操作层。</p>
+        </article>
+        <article class="signal-card reveal">
+          <h3>产品启发</h3>
+          <p>未来的护城河不只是能力堆叠，而是“我能不能放心交给你”。</p>
+        </article>
+      </div>
+      <div class="quote-card reveal">
+        <p>原始链接：<a href="https://youtube.com/watch?v=TvmxWWfiYWI" target="_blank" rel="noopener noreferrer">https://youtube.com/watch?v=TvmxWWfiYWI</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-dark">
+    <div class="corner-label reveal">builder signals</div>
+    <div class="slide-number">04 / 06</div>
+    <div class="slide-content">
+      <h2 class="reveal">X 上最值得看的几条 builder 信号</h2>
+      <div class="two-col">
+        <article class="dark-panel reveal">
+          <h3>Peter Yang</h3>
+          <p>短 sprint、少写文档、多做 demo 和 eval、随着模型变化重看旧功能、先做最简单可行版本。</p>
+          <p class="footer-note">这背后的逻辑：模型变化太快，重设计比重规划更重要。</p>
+          <a href="https://x.com/petergyang/status/2035130974682718585" target="_blank" rel="noopener noreferrer">查看原帖</a>
+        </article>
+        <article class="dark-panel reveal">
+          <h3>Cat Wu</h3>
+          <p>让原型更快到客户面前；agentic system 越复杂，失败越会叠加；先找到最简单能跑通的那一版。</p>
+          <p class="footer-note">复杂度不是优势，稳定跑通才是优势。</p>
+          <a href="https://x.com/_catwu/status/2035104391137784111" target="_blank" rel="noopener noreferrer">查看原帖</a>
+        </article>
+        <article class="dark-panel reveal">
+          <h3>Swyx</h3>
+          <p>更像是在回看过去 2.5 年被验证的高价值判断。研究价值不在观点本身，而在“谁具备持续预测能力”。</p>
+          <a href="https://x.com/swyx/status/2034893748916953450" target="_blank" rel="noopener noreferrer">查看原帖</a>
+        </article>
+        <article class="dark-panel reveal">
+          <h3>Karpathy</h3>
+          <p>这次不是高密度观点输出，而像是播客/访谈后的答疑延伸。信号在于：近期可能还会有更值得跟的长内容。</p>
+          <a href="https://x.com/karpathy/status/2035158351357911527" target="_blank" rel="noopener noreferrer">查看原帖</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-light">
+    <div class="corner-label reveal">compressed consensus</div>
+    <div class="slide-number">05 / 06</div>
+    <div class="slide-content">
+      <div class="insight-grid">
+        <div class="summary-box reveal">
+          <div class="eyebrow">三句压缩</div>
+          <h2>今天这批内容的共识</h2>
+          <ul class="bullet-list" style="margin-top: 1rem;">
+            <li>Agent 真正的门槛不是智能，而是可信。</li>
+            <li>AI 产品开发的关键不是规划更大，而是验证更快。</li>
+            <li>复杂系统容易放大失败，简单可行比花哨架构更值钱。</li>
+          </ul>
+        </div>
+        <div class="dark-panel reveal">
+          <h3>如果把它翻译成研究语言</h3>
+          <ul class="bullet-list">
+            <li>少追单点更新，多看重复出现的方法论。</li>
+            <li>区分“热闹”与“可转化为系统优势的信号”。</li>
+            <li>优先观察那些能跨平台重复出现的 builder 结论。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-dark">
+    <div class="corner-label reveal">for your workflow</div>
+    <div class="slide-number">06 / 06</div>
+    <div class="slide-content">
+      <div class="eyebrow reveal">下一步</div>
+      <h2 class="reveal">把摘要变成你的固定研究输入，而不是一次性阅读材料</h2>
+      <div class="signal-grid">
+        <article class="signal-card reveal">
+          <h3>研究层</h3>
+          <p>建立 builder 观察池，跟踪哪些观点能够被时间验证，哪些账号只是情绪放大器。</p>
+        </article>
+        <article class="signal-card reveal">
+          <h3>执行层</h3>
+          <p>先做最小可运行摘要流：抓取 → 提炼 → 存档 → 打标签，再决定是否自动化发送。</p>
+        </article>
+        <article class="signal-card reveal">
+          <h3>风险层</h3>
+          <p>任何“很强大”的工作流，如果不可解释、不可控、不可复盘，最后都不值得你放权。</p>
+        </article>
+      </div>
+      <div class="hero-bottom reveal" style="margin-top:auto;">
+        <p>建议后续把这份 HTML 模板进一步参数化：标题、builder 卡片、共识总结、来源链接都从 JSON 自动渲染。</p>
+        <div class="pill-row">
+          <span class="pill">next: template variables</span>
+          <span class="pill">next: JSON render</span>
+          <span class="pill">next: scheduled output</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    class SlidePresentation {
+      constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.currentSlide = 0;
+        this.isAnimating = false;
+        this.progressBar = document.getElementById('progressBar');
+        this.navDotsWrap = document.getElementById('navDots');
+        this.touchStartY = 0;
+        this.touchEndY = 0;
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupWheelNav();
+        this.setupTouchNav();
+        this.setupNavDots();
+        this.setupProgressBar();
+        this.updateCurrentSlideByScroll();
+        window.addEventListener('scroll', () => {
+          this.updateCurrentSlideByScroll();
+          this.setupProgressBar();
+        }, { passive: true });
+        window.addEventListener('resize', () => {
+          this.updateCurrentSlideByScroll();
+          this.setupProgressBar();
+        });
+      }
+
+      setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, { threshold: 0.42 });
+
+        this.slides.forEach(slide => observer.observe(slide));
+      }
+
+      setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+          if (["ArrowDown", "PageDown", " "].includes(e.key)) {
+            e.preventDefault();
+            this.goToSlide(this.currentSlide + 1);
+          }
+          if (["ArrowUp", "PageUp"].includes(e.key)) {
+            e.preventDefault();
+            this.goToSlide(this.currentSlide - 1);
+          }
+          if (e.key === 'Home') this.goToSlide(0);
+          if (e.key === 'End') this.goToSlide(this.slides.length - 1);
+        });
+      }
+
+      setupWheelNav() {
+        let wheelTimeout = null;
+        window.addEventListener('wheel', (e) => {
+          if (this.isAnimating) return;
+          clearTimeout(wheelTimeout);
+          wheelTimeout = setTimeout(() => {
+            if (Math.abs(e.deltaY) < 18) return;
+            if (e.deltaY > 0) this.goToSlide(this.currentSlide + 1);
+            else this.goToSlide(this.currentSlide - 1);
+          }, 30);
+        }, { passive: true });
+      }
+
+      setupTouchNav() {
+        window.addEventListener('touchstart', (e) => {
+          this.touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+          this.touchEndY = e.changedTouches[0].screenY;
+          const delta = this.touchStartY - this.touchEndY;
+          if (Math.abs(delta) < 48) return;
+          if (delta > 0) this.goToSlide(this.currentSlide + 1);
+          else this.goToSlide(this.currentSlide - 1);
+        }, { passive: true });
+      }
+
+      setupNavDots() {
+        this.navDotsWrap.innerHTML = '';
+        this.slides.forEach((_, index) => {
+          const dot = document.createElement('button');
+          dot.className = 'nav-dot';
+          dot.setAttribute('aria-label', `跳转到第 ${index + 1} 页`);
+          dot.addEventListener('click', () => this.goToSlide(index));
+          this.navDotsWrap.appendChild(dot);
+        });
+        this.updateNavDots();
+      }
+
+      setupProgressBar() {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxScroll <= 0 ? 0 : (window.scrollY / maxScroll) * 100;
+        this.progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+      }
+
+      updateCurrentSlideByScroll() {
+        const viewportMid = window.scrollY + window.innerHeight / 2;
+        let nearestIndex = 0;
+        let nearestDistance = Infinity;
+        this.slides.forEach((slide, index) => {
+          const slideMid = slide.offsetTop + slide.offsetHeight / 2;
+          const distance = Math.abs(slideMid - viewportMid);
+          if (distance < nearestDistance) {
+            nearestDistance = distance;
+            nearestIndex = index;
+          }
+        });
+        this.currentSlide = nearestIndex;
+        this.updateNavDots();
+      }
+
+      updateNavDots() {
+        const dots = this.navDotsWrap.querySelectorAll('.nav-dot');
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === this.currentSlide);
+        });
+      }
+
+      goToSlide(index) {
+        const target = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.currentSlide = target;
+        this.isAnimating = true;
+        this.slides[target].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        this.updateNavDots();
+        setTimeout(() => {
+          this.isAnimating = false;
+          this.updateCurrentSlideByScroll();
+          this.setupProgressBar();
+        }, 700);
+      }
+    }
+
+    new SlidePresentation();
+  </script>
+</body>
+</html>
