@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Builders Digest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #081018;
+      --bg-panel: #0e1726;
+      --bg-soft: #121e31;
+      --bg-white: #f4f7fb;
+      --text-light: #f8fbff;
+      --text-dim: #b7c4d7;
+      --text-dark: #0b1320;
+      --accent-blue: #4b7cff;
+      --accent-cyan: #72e2ff;
+      --accent-line: rgba(255,255,255,0.1);
+      --accent-glow: rgba(75, 124, 255, 0.28);
+      --shadow: 0 20px 60px rgba(0,0,0,0.28);
+      --font-display: 'Manrope', 'Noto Sans SC', sans-serif;
+      --font-body: 'Noto Sans SC', 'Manrope', sans-serif;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-normal: 0.6s;
+      --title-size: clamp(2rem, 6vw, 5rem);
+      --h2-size: clamp(1.35rem, 3.5vw, 2.8rem);
+      --h3-size: clamp(1rem, 2.2vw, 1.5rem);
+      --body-size: clamp(0.8rem, 1.35vw, 1.05rem);
+      --small-size: clamp(0.7rem, 0.95vw, 0.84rem);
+      --slide-padding: clamp(1rem, 4vw, 4rem);
+      --content-gap: clamp(1rem, 2vw, 2rem);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow-x: hidden; }
+    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; background: var(--bg-dark); }
+    body {
+      font-family: var(--font-body);
+      color: var(--text-light);
+      background:
+        radial-gradient(circle at top right, rgba(114, 226, 255, 0.12), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(75, 124, 255, 0.15), transparent 24%),
+        linear-gradient(180deg, #081018 0%, #0b1320 100%);
+    }
+    .slide {
+      width: 100vw; height: 100vh; height: 100dvh; overflow: hidden;
+      scroll-snap-align: start; display: flex; flex-direction: column; position: relative; isolation: isolate;
+    }
+    .slide-content {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      max-height: 100%; overflow: hidden; padding: var(--slide-padding); gap: var(--content-gap); position: relative; z-index: 2;
+    }
+    .progress-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 4px; z-index: 1000; background: rgba(255,255,255,0.05); }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); box-shadow: 0 0 24px var(--accent-glow); transition: width 0.2s linear; }
+    .nav-dots { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
+    .nav-dot { width: 11px; height: 11px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.28); background: rgba(255,255,255,0.08); cursor: pointer; transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease; }
+    .nav-dot.active { background: var(--accent-cyan); border-color: var(--accent-cyan); transform: scale(1.25); }
+    .corner-label, .slide-number { position: absolute; z-index: 3; letter-spacing: 0.14em; text-transform: uppercase; }
+    .corner-label { top: clamp(0.9rem, 2vw, 1.5rem); left: clamp(1rem, 3vw, 2rem); font-size: var(--small-size); color: var(--text-dim); }
+    .slide-number { top: clamp(1rem, 3vw, 2rem); right: clamp(1rem, 3vw, 2rem); font-size: clamp(0.75rem, 1vw, 0.9rem); color: rgba(255,255,255,0.55); }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity var(--duration-normal) var(--ease-out-expo), transform var(--duration-normal) var(--ease-out-expo); }
+    .slide.visible .reveal { opacity: 1; transform: translateY(0); }
+    .eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; font-size: var(--small-size); text-transform: uppercase; letter-spacing: 0.16em; color: var(--accent-cyan); font-weight: 700; }
+    .eyebrow::before { content: ''; width: 42px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-cyan)); }
+    h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.03em; line-height: 0.95; }
+    h1 { font-size: var(--title-size); font-weight: 800; max-width: 10ch; }
+    h2 { font-size: var(--h2-size); font-weight: 800; max-width: 12ch; }
+    h3 { font-size: var(--h3-size); font-weight: 800; }
+    p, li { font-size: var(--body-size); line-height: 1.55; color: var(--text-dim); }
+    .lead { max-width: 60ch; font-size: clamp(0.95rem, 1.5vw, 1.18rem); color: rgba(248,251,255,0.88); }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .pill { padding: 0.6rem 0.95rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; background: rgba(255,255,255,0.06); color: var(--text-light); font-size: var(--small-size); }
+    .hero::before, .section-dark::before, .section-light::before { content: ''; position: absolute; inset: auto -10% -20% auto; width: 44vw; height: 44vw; min-width: 260px; min-height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(75,124,255,0.25) 0%, rgba(75,124,255,0.08) 40%, transparent 70%); filter: blur(16px); z-index: 0; }
+    .hero .slide-content { justify-content: space-between; padding-top: clamp(4rem, 10vh, 7rem); padding-bottom: clamp(2rem, 6vh, 4rem); }
+    .hero-top, .split-grid, .insight-grid { display: grid; gap: clamp(1rem, 2.5vw, 2rem); }
+    .hero-top { grid-template-columns: 1.2fr 0.8fr; align-items: start; }
+    .split-grid, .insight-grid { grid-template-columns: 1fr 1fr; align-items: stretch; }
+    .hero-meta, .white-panel, .dark-panel, .summary-box, .signal-card { border-radius: var(--radius-xl); padding: clamp(1rem, 2.8vw, 1.8rem); box-shadow: var(--shadow); }
+    .hero-meta, .dark-panel, .signal-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+    .white-panel { background: var(--bg-white); color: var(--text-dark); }
+    .white-panel p, .white-panel li { color: rgba(11,19,32,0.76); }
+    .signal-grid, .two-col { display: grid; gap: clamp(0.8rem, 1.8vw, 1.2rem); }
+    .signal-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .quote-card { border-left: 4px solid var(--accent-blue); padding: 1rem 1rem 1rem 1.2rem; background: rgba(255,255,255,0.03); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+    .bullet-list li { position: relative; padding-left: 1.1rem; }
+    .bullet-list li::before { content: ''; position: absolute; left: 0; top: 0.72em; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: var(--accent-cyan); }
+    .summary-box { background: linear-gradient(180deg, rgba(75,124,255,0.12), rgba(75,124,255,0.04)); border: 1px solid rgba(114,226,255,0.14); }
+    .tweet-stack { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 0.8rem; }
+    .tweet-card { padding: 0.9rem; border-radius: var(--radius-md); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); }
+    a { color: var(--accent-cyan); text-decoration: none; }
+    .footer-note { font-size: var(--small-size); color: rgba(255,255,255,0.5); }
+    @media (max-width: 760px) { .hero-top, .split-grid, .insight-grid, .two-col, .signal-grid { grid-template-columns: 1fr !important; } .nav-dots { display: none; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <nav class="nav-dots" id="navDots" aria-label="幻灯片导航"></nav>
+
+  <section class="slide hero">
+    <div class="corner-label reveal">follow builders / auto-rendered</div>
+    <div class="slide-number">01 / 06</div>
+    <div class="slide-content">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow reveal">AI builders digest</div>
+          <h1 class="reveal">AI Builders Digest</h1>
+          <p class="lead reveal">这份 HTML 由 <code>prepare-digest.js</code> 产出的 JSON 自动渲染而来。目标不是做一次性海报，而是把 daily digest 变成可浏览、可归档、可持续复用的网页输出。</p>
+        </div>
+        <div class="hero-meta reveal">
+          <p class="footer-note">生成时间</p>
+          <strong>2026-03-21T15:34:08.400Z</strong>
+          <p>Podcast：1 个 / Builders：16 位 / Tweets：32 条</p>
+        </div>
+      </div>
+      <div class="pill-row reveal">
+        <span class="pill">auto rendered</span>
+        <span class="pill">single HTML</span>
+        <span class="pill">frontend-slides style</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-dark">
+    <div class="corner-label reveal">topline</div>
+    <div class="slide-number">02 / 06</div>
+    <div class="slide-content">
+      <div class="split-grid">
+        <div class="white-panel reveal">
+          <div class="eyebrow" style="color:#4b7cff;">主结论</div>
+          <h2 style="color:#0b1320; max-width:11ch;">今天更像是“可信代理 + 快速验证”的双主线</h2>
+          <ul class="bullet-list" style="margin-top: 1rem;">
+            <li>值得关注的不是功能数量，而是可托付程度。</li>
+            <li>builder 的高频共识正在往“更短反馈回路”收敛。</li>
+            <li>越复杂的系统，越需要反向证明它值得存在。</li>
+          </ul>
+        </div>
+        <div class="dark-panel reveal">
+          <h3>这一页不是 LLM 总结</h3>
+          <p>这里先给一个稳定的壳：无论哪天 feed 长什么样，这一页都能承载“今天最可能的主题”。后面如果你愿意，可以再把这里升级成真正的 AI 摘要位。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-dark">
+    <div class="corner-label reveal">podcast</div>
+    <div class="slide-number">03 / 06</div>
+    <div class="slide-content">
+      <div class="eyebrow reveal">podcast signal</div>
+      <h2 class="reveal">播客信号</h2>
+      
+    <div class="signal-grid">
+      <article class="signal-card reveal">
+        <h3>本期节目</h3>
+        <p>Latent Space</p>
+      </article>
+      <article class="signal-card reveal">
+        <h3>标题</h3>
+        <p>Dreamer: the Agent OS for Everyone — David Singleton</p>
+      </article>
+      <article class="signal-card reveal">
+        <h3>可用价值</h3>
+        <p>Obviously, it&#39;s really cool to have software that will work on your behalf, but it&#39;s only useful if you can trust it, right? So, privacy and security is very important to us. And so, as we started to think about this pr…</p>
+      </article>
+    </div>
+    <div class="quote-card reveal">
+      <p>原始链接：<a href="https://youtube.com/watch?v=TvmxWWfiYWI" target="_blank" rel="noopener noreferrer">https://youtube.com/watch?v=TvmxWWfiYWI</a></p>
+    </div>
+  
+    </div>
+  </section>
+
+  <section class="slide section-dark">
+    <div class="corner-label reveal">builders</div>
+    <div class="slide-number">04 / 06</div>
+    <div class="slide-content">
+      <div class="eyebrow reveal">top builders</div>
+      <h2 class="reveal">高密度 builder 样本</h2>
+      <div class="two-col">
+        
+    <article class="dark-panel reveal">
+      <h3>Nan Yu</h3>
+      <p>head of product @linear</p>
+      <div class="tweet-stack">
+        
+          <div class="tweet-card">
+            <p>fml https://t.co/Db1ZDGXurf</p>
+            <a href="https://x.com/thenanyu/status/2035131260612264249" target="_blank" rel="noopener noreferrer">查看原帖</a>
+          </div>
+        
+          <div class="tweet-card">
+            <p>whatever the design style is that copies this old Apple stuff is already looking crazy dated to me. Big tall centered condensed serif titles barf https://t.co/l1QneM3DBF</p>
+            <a href="https://x.com/thenanyu/status/2035109784429408373" target="_blank" rel="noopener noreferrer">查看原帖</a>
+          </div>
+        
+      </div>
+    </article>
+  
+    <article class="dark-panel reveal">
+      <h3>Cat Wu</h3>
+      <p>claude code + cowork @anthropicai, prev: @dagster, @scale_ai</p>
+      <div class="tweet-stack">
+        
+          <div class="tweet-card">
+            <p>Bihan Jiang (Director of Product, Decagon) and Kai Xin Tai (Senior Product Manager, Datadog) also shared how their teams get a prototype in front of a customer way faster than the…</p>
+            <a href="https://x.com/_catwu/status/2035104391137784111" target="_blank" rel="noopener noreferrer">查看原帖</a>
+          </div>
+        
+          <div class="tweet-card">
+            <p>4/ Do the simple thing With agentic systems, failures compound with system complexity. Find the simplest thing that works.</p>
+            <a href="https://x.com/_catwu/status/2035104389808222383" target="_blank" rel="noopener noreferrer">查看原帖</a>
+          </div>
+        
+      </div>
+    </article>
+  
+    <article class="dark-panel reveal">
+      <h3>Garry Tan</h3>
+      <p>President &amp; CEO @ycombinator —Founder https://t.co/7aoJjp1iIK—designer/engineer who helps founders—SF Dem accelerating the boom loop—haters…</p>
+      <div class="tweet-stack">
+        
+          <div class="tweet-card">
+            <p>Unc Claude Code hackers of the world, unite! https://t.co/NC7o6cFae1</p>
+            <a href="https://x.com/garrytan/status/2035227471273238749" target="_blank" rel="noopener noreferrer">查看原帖</a>
+          </div>
+        
+          <div class="tweet-card">
+            <p>My GStack /plan-design-review can take a 4 out of 10 mediocre design or wireframe all the way up to a 10 out of 10 visual design. It&#39;s amazing how helpful LLMs can be when you ask…</p>
+            <a href="https://x.com/garrytan/status/2035214231625474489" target="_blank" rel="noopener noreferrer">查看原帖</a>
+          </div>
+        
+      </div>
+    </article>
+  
+    <article class="dark-panel reveal">
+      <h3>Dan Shipper</h3>
+      <p>ceo @every | the only subscription you need to stay at the edge of AI</p>
+      <div class="tweet-stack">
+        
+          <div class="tweet-card">
+            <p>whatever you do, don&#39;t try Proof. i don&#39;t want the server to break again: https://t.co/JfAd0xIW6D</p>
+            <a href="https://x.com/danshipper/status/2035042300871811547" target="_blank" rel="noopener noreferrer">查看原帖</a>
+          </div>
+        
+          <div class="tweet-card">
+            <p>Last week our vibe-coded agent-native document editor, Proof, went viral. 4,000+ documents were created in the first two days—and then the app started crashing uncontrollably. I v…</p>
+            <a href="https://x.com/danshipper/status/2035030133413704154" target="_blank" rel="noopener noreferrer">查看原帖</a>
+          </div>
+        
+      </div>
+    </article>
+  
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-light">
+    <div class="corner-label reveal">consensus</div>
+    <div class="slide-number">05 / 06</div>
+    <div class="slide-content">
+      <div class="insight-grid">
+        <div class="summary-box reveal">
+          <div class="eyebrow">三句压缩</div>
+          <h2>今日共识</h2>
+          <ul class="bullet-list" style="margin-top: 1rem;"><li>Agent 真正的门槛不是更像人，而是更值得被托付。</li><li>产品迭代的关键不是规划更大，而是验证更快。</li><li>当短内容密度上来时，更需要先压缩共识，再决定哪些值得深挖。</li></ul>
+        </div>
+        <div class="dark-panel reveal">
+          <h3>怎么用这页</h3>
+          <p>这页最适合做“连续归档”。如果你每天都把 digest 压成 3 句话，几周后就能回看：哪些主题是噪音，哪些主题在不断重复出现。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-dark">
+    <div class="corner-label reveal">workflow</div>
+    <div class="slide-number">06 / 06</div>
+    <div class="slide-content">
+      <div class="eyebrow reveal">next step</div>
+      <h2 class="reveal">把 digest 变成研究输入，而不是一次性阅读材料</h2>
+      <div class="split-grid">
+        <div class="dark-panel reveal">
+          <h3>建议动作</h3>
+          <ul class="bullet-list"><li>把值得长期跟踪的人分成：高信噪比 / 高频更新 / 待观察 三层。</li><li>把每期 digest 的共识压成 3 句话，连续存档，观察哪些主题重复出现。</li><li>把摘要从“阅读材料”升级成“研究输入”：抓取 → 提炼 → 标注 → 复盘。</li></ul>
+        </div>
+        <div class="dark-panel reveal">
+          <h3>当前能力边界</h3>
+          <ul class="bullet-list">
+            <li>已经自动把 JSON 渲染成 HTML slide。</li>
+            <li>还没有做真正的 AI 级别内容重写与排版优化。</li>
+            <li>下一步最合理的是：JSON → 摘要层 → HTML 模板层。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    class SlidePresentation {
+      constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.currentSlide = 0;
+        this.isAnimating = false;
+        this.progressBar = document.getElementById('progressBar');
+        this.navDotsWrap = document.getElementById('navDots');
+        this.touchStartY = 0;
+        this.touchEndY = 0;
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupWheelNav();
+        this.setupTouchNav();
+        this.setupNavDots();
+        this.setupProgressBar();
+        this.updateCurrentSlideByScroll();
+        window.addEventListener('scroll', () => { this.updateCurrentSlideByScroll(); this.setupProgressBar(); }, { passive: true });
+        window.addEventListener('resize', () => { this.updateCurrentSlideByScroll(); this.setupProgressBar(); });
+      }
+      setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.42 });
+        this.slides.forEach(slide => observer.observe(slide));
+      }
+      setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+          if (["ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); this.goToSlide(this.currentSlide + 1); }
+          if (["ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); this.goToSlide(this.currentSlide - 1); }
+          if (e.key === 'Home') this.goToSlide(0);
+          if (e.key === 'End') this.goToSlide(this.slides.length - 1);
+        });
+      }
+      setupWheelNav() {
+        let wheelTimeout = null;
+        window.addEventListener('wheel', (e) => {
+          if (this.isAnimating) return;
+          clearTimeout(wheelTimeout);
+          wheelTimeout = setTimeout(() => {
+            if (Math.abs(e.deltaY) < 18) return;
+            if (e.deltaY > 0) this.goToSlide(this.currentSlide + 1);
+            else this.goToSlide(this.currentSlide - 1);
+          }, 30);
+        }, { passive: true });
+      }
+      setupTouchNav() {
+        window.addEventListener('touchstart', (e) => { this.touchStartY = e.changedTouches[0].screenY; }, { passive: true });
+        window.addEventListener('touchend', (e) => {
+          this.touchEndY = e.changedTouches[0].screenY;
+          const delta = this.touchStartY - this.touchEndY;
+          if (Math.abs(delta) < 48) return;
+          if (delta > 0) this.goToSlide(this.currentSlide + 1); else this.goToSlide(this.currentSlide - 1);
+        }, { passive: true });
+      }
+      setupNavDots() {
+        this.navDotsWrap.innerHTML = '';
+        this.slides.forEach((_, index) => {
+          const dot = document.createElement('button');
+          dot.className = 'nav-dot';
+          dot.setAttribute('aria-label', '跳转到第 ' + (index + 1) + ' 页');
+          dot.addEventListener('click', () => this.goToSlide(index));
+          this.navDotsWrap.appendChild(dot);
+        });
+        this.updateNavDots();
+      }
+      setupProgressBar() {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxScroll <= 0 ? 0 : (window.scrollY / maxScroll) * 100;
+        this.progressBar.style.width = Math.min(100, Math.max(0, progress)) + '%';
+      }
+      updateCurrentSlideByScroll() {
+        const viewportMid = window.scrollY + window.innerHeight / 2;
+        let nearestIndex = 0;
+        let nearestDistance = Infinity;
+        this.slides.forEach((slide, index) => {
+          const slideMid = slide.offsetTop + slide.offsetHeight / 2;
+          const distance = Math.abs(slideMid - viewportMid);
+          if (distance < nearestDistance) { nearestDistance = distance; nearestIndex = index; }
+        });
+        this.currentSlide = nearestIndex;
+        this.updateNavDots();
+      }
+      updateNavDots() {
+        this.navDotsWrap.querySelectorAll('.nav-dot').forEach((dot, index) => dot.classList.toggle('active', index === this.currentSlide));
+      }
+      goToSlide(index) {
+        const target = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.currentSlide = target;
+        this.isAnimating = true;
+        this.slides[target].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        this.updateNavDots();
+        setTimeout(() => { this.isAnimating = false; this.updateCurrentSlideByScroll(); this.setupProgressBar(); }, 700);
+      }
+    }
+    new SlidePresentation();
+  </script>
+</body>
+</html>
